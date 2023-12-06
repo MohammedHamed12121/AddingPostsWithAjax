@@ -1,0 +1,108 @@
+@model Post
+
+
+
+<style>
+    body {
+        @* font-family: Arial, sans-serif; *@
+        @* margin: 20px; *@
+    }
+
+    #post-form {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    #post-form textarea {
+        width: 100%;
+        resize: none;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+
+    #post-form button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+
+    @* ________________________________________________________________ *@
+    @* the part responsible for pop up *@
+    <!-- Button to trigger the modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add Post
+    </button>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Popup Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Your form goes here -->
+
+                    <div id="post-form">
+                        <h2>Create Post</h2>
+                        <form asp-action="Post" method="post" id="create-post-form">
+                            <textarea asp-for="Text" id="post-content" placeholder="What's on your mind?"></textarea>
+                            <br>
+                            <button type="submit" onclick="postData()">Post</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ________________________________________________________________ *@
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Your custom script goes here -->
+    <script>
+
+        function postData() {
+            // Get the data from the form
+            var dataToPost = document.getElementById("dataInput").value;
+
+            // Perform an AJAX request to post data to the server
+            $.ajax({
+                type: "POST",
+                url: "/Home/Post",
+                data: { data: dataToPost },
+                success: function (response) {
+                    // Handle the response (e.g., show a success message)
+                    alert(response);
+                    // Close the modal if needed
+                    $('#exampleModal').modal('hide');
+                },
+                error: function (error) {
+                    // Handle the error (e.g., show an error message)
+                    alert("Error posting data: " + error.responseText);
+                }
+            });
+        }
+    </script>
+</body>
